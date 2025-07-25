@@ -24,7 +24,7 @@ index f1d86b2..d41cc14 100644
  			arg.ui = 1 << i;
 @@ -715,19 +721,18 @@ drawbar(Monitor *m)
  	}
- 
+
  	for (c = m->clients; c; c = c->next) {
 -		occ |= c->tags;
 +		occ |= c->tags == TAGMASK ? 0 : c->tags;
