@@ -38,16 +38,16 @@ index 061ad66..686b947 100644
 +       [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
 +       [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
  };
- 
+
  /* tagging */
 @@ -56,7 +57,7 @@ static const Layout layouts[] = {
  #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
- 
+
  /* commands */
 -static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 +static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
  static const char *termcmd[]  = { "st", NULL };
- 
+
  static const Key keys[] = {
 @@ -84,6 +85,7 @@ static const Key keys[] = {
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
@@ -75,12 +75,12 @@ index 6471431..bdbf950 100644
 --- a/drw.h
 +++ b/drw.h
 @@ -40,7 +40,7 @@ void drw_font_getexts(Fnt *font, const char *text, unsigned int len, unsigned in
- 
+
  /* Colorscheme abstraction */
  void drw_clr_create(Drw *drw, Clr *dest, const char *clrname);
 -Clr *drw_scm_create(Drw *drw, const char *clrnames[], size_t clrcount);
 +Clr *drw_scm_create(Drw *drw, char *clrnames[], size_t clrcount);
- 
+
  /* Cursor abstraction */
  Cur *drw_cur_create(Drw *drw, int shape);
 diff --git a/dwm.c b/dwm.c
@@ -114,7 +114,7 @@ index e5efb6a..3fe76be 100644
 +                                    } \
 +                                  } \
 +                                }
- 
+
  /* enums */
  enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
 @@ -178,6 +194,7 @@ static void grabkeys(void);
@@ -131,12 +131,12 @@ index e5efb6a..3fe76be 100644
  static int xerrorstart(Display *dpy, XErrorEvent *ee);
 +static void xrdb(const Arg *arg);
  static void zoom(const Arg *arg);
- 
+
  /* variables */
 @@ -1019,6 +1037,37 @@ killclient(const Arg *arg)
  	}
  }
- 
+
 +void
 +loadxrdb()
 +{
@@ -174,7 +174,7 @@ index e5efb6a..3fe76be 100644
 @@ -2110,6 +2159,17 @@ xerrorstart(Display *dpy, XErrorEvent *ee)
  	return -1;
  }
- 
+
 +void
 +xrdb(const Arg *arg)
 +{
@@ -198,6 +198,6 @@ index e5efb6a..3fe76be 100644
  	setup();
  #ifdef __OpenBSD__
  	if (pledge("stdio rpath proc exec", NULL) == -1)
--- 
+--
 2.38.2
 
