@@ -2,10 +2,11 @@
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int gappx     = 8;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
+static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
+static const int topbar             = 0;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Inter:size=10" };
 static const char dmenufont[]       = "Inter:size=10";
 static char normbgcolor[]           = "#222222";
@@ -28,10 +29,10 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
-	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
-	{ "St",      NULL,     NULL,           0,         0,          1,           0,        -1 },
+	/* class         instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Gimp",        NULL,     NULL,           0,         1,          0,           0,        -1 },
+	{ "Firefox",     NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
+	{ "st-256color", NULL,     NULL,           0,         0,          1,           0,        -1 },
 };
 
 /* layout(s) */
@@ -60,13 +61,19 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
+	{ MODKEY,                       XK_a,      spawn,          {.v = { "playerctl", "-i", "firefox", "previous",    NULL } } },
+	{ MODKEY,                       XK_d,      spawn,          {.v = { "playerctl", "-i", "firefox", "next",        NULL } } },
+	{ MODKEY,                       XK_space,  spawn,          {.v = { "playpause",   NULL } } },
+	// TODO: { MODKEY|ControlMask,           XK_g,      spawn,          {.v = { "save-replay", NULL } } },
+	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = { "startup",     NULL } } },
+	{ MODKEY,                       XK_s,      spawn,          {.v = { "picomtoggle", NULL } } },
+	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = { "ss",          NULL } } },
+	{ MODKEY,                       XK_t,      spawn,          {.v = { "st",          NULL } } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_t,      spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -105,20 +112,24 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_v,                      8)
 };
 
+#define LMB Button1
+#define MMB Button2
+#define RMB Button3
+
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
-	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	/* click                event mask      button      function        argument */
+	{ ClkLtSymbol,          0,              LMB,        setlayout,      {0} },
+	{ ClkLtSymbol,          0,              RMB,        setlayout,      {.v = &layouts[2]} },
+	// { ClkWinTitle,          0,           MMB,        zoom,           {0} },
+	// { ClkStatusText,        0,           MMB,        spawn,          {.v = termcmd } },
+	{ ClkClientWin,         MODKEY,         LMB,        movemouse,      {0} },
+	{ ClkClientWin,         MODKEY,         MMB,        togglefloating, {0} },
+	{ ClkClientWin,         MODKEY,         RMB,        resizemouse,    {0} },
+	{ ClkTagBar,            0,              LMB,        view,           {0} },
+	{ ClkTagBar,            0,              RMB,        toggleview,     {0} },
+	{ ClkTagBar,            MODKEY,         LMB,        tag,            {0} },
+	{ ClkTagBar,            MODKEY,         RMB,        toggletag,      {0} },
 };
 
