@@ -2110,6 +2110,7 @@ updatesizehints(Client *c)
 	c->hintsvalid = 1;
 }
 
+// TODO: make dwmblocks obsolete?
 void
 updatestatus(void)
 {
