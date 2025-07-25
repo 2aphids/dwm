@@ -62,17 +62,19 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
+static const char *playprevcmd[] = { "playerctl", "-i", "firefox", "previous", NULL };
+static const char *playnextcmd[] = { "playerctl", "-i", "firefox", "next", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_a,      spawn,          {.v = { "playerctl", "-i", "firefox", "previous",    NULL } } },
-	{ MODKEY,                       XK_d,      spawn,          {.v = { "playerctl", "-i", "firefox", "next",        NULL } } },
-	{ MODKEY,                       XK_space,  spawn,          {.v = { "playpause",   NULL } } },
-	// TODO: { MODKEY|ControlMask,           XK_g,      spawn,          {.v = { "save-replay", NULL } } },
-	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = { "startup",     NULL } } },
-	{ MODKEY,                       XK_s,      spawn,          {.v = { "picomtoggle", NULL } } },
-	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = { "ss",          NULL } } },
-	{ MODKEY,                       XK_t,      spawn,          {.v = { "st",          NULL } } },
+	{ MODKEY,                       XK_a,      spawn,          {.v = playprevcmd } },
+	{ MODKEY,                       XK_d,      spawn,          {.v = playnextcmd } },
+	{ MODKEY,                       XK_space,  spawn,          {.v = "playpause" } },
+	// TODO: { MODKEY|ControlMask,           XK_g,      spawn,          {.v = "save-replay" } },
+	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = "startup" } },
+	{ MODKEY,                       XK_s,      spawn,          {.v = "picomtoggle" } },
+	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = "ss" } },
+	{ MODKEY,                       XK_t,      spawn,          {.v = "st" } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },

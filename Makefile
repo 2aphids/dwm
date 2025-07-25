@@ -3,18 +3,18 @@
 
 include config.mk
 
-SRC = drw.c dwm.c util.c
-OBJ = ${SRC:.c=.o}
+SRC = src/drw.c src/dwm.c src/util.c
+OBJ = obj/drw.o obj/dwm.o obj/util.o
 
 all: dwm
 
-.c.o:
-	${CC} -c ${CFLAGS} $<
+obj/%.o: src/%.c
+	${CC} -c ${CFLAGS} -o $@ $<
 
-${OBJ}: config.h config.mk
+${OBJ}: src/config.h config.mk
 
-config.h:
-	cp config.def.h $@
+src/config.h:
+	cp src/config.def.h $@
 
 dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
