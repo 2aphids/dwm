@@ -14,5 +14,5 @@ This build implements multiple third-party patches:
 1. [swallow](https://dwm.suckless.org/patches/swallow/)
 2. [hide vacant tags](https://dwm.suckless.org/patches/hide_vacant_tags/)
 3. [smartborders](https://dwm.suckless.org/patches/smartborders/)
-4. [xrdb](https://dwm.suckless.org/patches/xrdb/)
+4. [xresources](https://dwm.suckless.org/patches/xresources/)
 5. [uselessgap](https://dwm.suckless.org/patches/uselessgap/)
