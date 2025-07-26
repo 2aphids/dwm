@@ -1,6 +1,6 @@
 # dwm (dynamic window manager)
 
-See [suckless.org](dwm.suckless.org) for information on dwm, including [the original README](https://git.suckless.org/dwm/file/README.html)
+See [suckless.org](dwm.suckless.org) for information on dwm, including [the original README](https://git.suckless.org/dwm/file/README.html).
 
 This build implements multiple third-party patches:
 1. [swallow](https://dwm.suckless.org/patches/swallow/)

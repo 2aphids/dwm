@@ -1,14 +1,15 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static unsigned int borderpx        = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 8;        /* gaps between windows */
-static const unsigned int snap      = 32;       /* snap pixel */
+static unsigned int snap            = 32;       /* snap pixel */
 static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
-static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 0;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Inter:size=10" };
-static const char dmenufont[]       = "Inter:size=10";
+static int showbar                  = 1;        /* 0 means no bar */
+static int topbar                   = 0;        /* 0 means bottom bar */
+static char font[]                  = "Inter:size=10";
+static char dmenufont[]             = "Inter:size=10";
+static const char *fonts[]          = { font };
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
 static char normfgcolor[]           = "#bbbbbb";
@@ -36,9 +37,9 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
-static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static int nmaster     = 1;    /* number of clients in master area */
+static int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
@@ -64,17 +65,44 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *playprevcmd[] = { "playerctl", "-i", "firefox", "previous", NULL };
 static const char *playnextcmd[] = { "playerctl", "-i", "firefox", "next", NULL };
+static const char *playpausecmd[] = { "playpause", NULL };
+static const char *startupcmd[] = { "startup", NULL };
+static const char *termcmd[] = { "st", NULL };
+static const char *sscmd[] = { "ss", NULL };
+static const char *picomtogglecmd[] = { "picomtoggle", NULL };
+// TODO: static const char *clipcmd[] = { "save-replay", NULL };
+
+/*
+ * Xresources preferences to load at startup
+ */
+ResourcePref resources[] = {
+    { "font",            STRING,  &font },
+		{ "dmenufont",       STRING,  &dmenufont },
+		{ "normbgcolor",     STRING,  &normbgcolor },
+		{ "normbordercolor", STRING,  &normbordercolor },
+		{ "normfgcolor",     STRING,  &normfgcolor },
+		{ "selbgcolor",      STRING,  &selbgcolor },
+		{ "selbordercolor",  STRING,  &selbordercolor },
+		{ "selfgcolor",      STRING,  &selfgcolor },
+		{ "borderpx",        INTEGER, &borderpx },
+		{ "snap",          	 INTEGER, &snap },
+		{ "showbar",         INTEGER, &showbar },
+		{ "topbar",          INTEGER, &topbar },
+		{ "nmaster",         INTEGER, &nmaster },
+		{ "resizehints",     INTEGER, &resizehints },
+		{ "mfact",      	 	 FLOAT,   &mfact },
+};
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_a,      spawn,          {.v = playprevcmd } },
-	{ MODKEY,                       XK_d,      spawn,          {.v = playnextcmd } },
-	{ MODKEY,                       XK_space,  spawn,          {.v = "playpause" } },
-	// TODO: { MODKEY|ControlMask,           XK_g,      spawn,          {.v = "save-replay" } },
-	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = "startup" } },
-	{ MODKEY,                       XK_s,      spawn,          {.v = "picomtoggle" } },
-	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = "ss" } },
-	{ MODKEY,                       XK_t,      spawn,          {.v = "st" } },
+	{ MODKEY|ShiftMask,             XK_a,      spawn,          {.v = playprevcmd } },
+	{ MODKEY|ShiftMask,             XK_d,      spawn,          {.v = playnextcmd } },
+	{ MODKEY,                       XK_space,  spawn,          {.v = playpausecmd } },
+	// TODO: { MODKEY|ControlMask,           XK_g,      spawn,          {.v = clipcmd } },
+	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = startupcmd } },
+	{ MODKEY,                       XK_s,      spawn,          {.v = picomtogglecmd } },
+	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = sscmd } },
+	{ MODKEY,                       XK_t,      spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -90,7 +118,7 @@ static const Key keys[] = {
 	// { MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	// { MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	// { MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
+	// { MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_f,      togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
@@ -98,7 +126,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,                       XK_F5,     xrdb,           {.v = NULL } }, // reload xresources
+	// { MODKEY,                       XK_F5,     xrdb,           {.v = NULL } }, // reload xresources
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
