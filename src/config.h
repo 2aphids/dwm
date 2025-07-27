@@ -33,7 +33,7 @@ static const Rule rules[] = {
 	/* class         instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "Gimp",        NULL,     NULL,           0,         1,          0,           0,        -1 },
 	{ "Firefox",     NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
-	{ "st-256color", NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "St",          NULL,     NULL,           0,         0,          1,           0,        -1 },
 };
 
 /* layout(s) */
@@ -63,12 +63,12 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *playprevcmd[] = { "playerctl", "-i", "firefox", "previous", NULL };
-static const char *playnextcmd[] = { "playerctl", "-i", "firefox", "next", NULL };
-static const char *playpausecmd[] = { "playpause", NULL };
-static const char *startupcmd[] = { "startup", NULL };
-static const char *termcmd[] = { "st", NULL };
-static const char *sscmd[] = { "ss", NULL };
+static const char *playprevcmd[]    = { "playerctl", "-i", "firefox", "previous", NULL };
+static const char *playnextcmd[]    = { "playerctl", "-i", "firefox", "next", NULL };
+static const char *playpausecmd[]   = { "playpause", NULL };
+static const char *startupcmd[]     = { "startup", NULL };
+static const char *termcmd[]        = { "st", NULL };
+static const char *sscmd[]          = { "ss", NULL };
 static const char *picomtogglecmd[] = { "picomtoggle", NULL };
 // TODO: static const char *clipcmd[] = { "save-replay", NULL };
 
