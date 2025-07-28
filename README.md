@@ -1,10 +1,6 @@
-![dwm logo](dwm.png "dwm logo")
-
-<!--
 <p align="center">
   <img src="dwm.png" />
 </p>
--->
 
 See [suckless.org](dwm.suckless.org) for information on dwm, including [the original README](https://git.suckless.org/dwm/file/README.html).
 
