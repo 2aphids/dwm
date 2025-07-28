@@ -1,5 +1,3 @@
-# dwm (dynamic window manager)
-
 ![dwm logo](dwm.png "dwm logo")
 
 <!--
