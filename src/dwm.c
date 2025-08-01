@@ -1218,6 +1218,7 @@ modgappx(const Arg *arg)
   gappx += arg->i;
   if (gappx < 0)
     gappx = 0;
+	arrange(selmon);
 }
 
 void
