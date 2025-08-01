@@ -16,10 +16,16 @@ static char normfgcolor[]           = "#bbbbbb";
 static char selfgcolor[]            = "#eeeeee";
 static char selbordercolor[]        = "#005577";
 static char selbgcolor[]            = "#005577";
+static char col_black[]             = "#000000";
+static char col_red[]               = "#ff0000";
+static char col_yellow[]            = "#ffff00";
+static char col_white[]             = "#ffffff";
 static char *colors[][3] = {
-       /*               fg           bg           border   */
-       [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
-       [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
+       /*                 fg           bg           border   */
+       [SchemeNorm]   = { normfgcolor, normbgcolor, normbordercolor },
+       [SchemeSel]    = { selfgcolor,  selbgcolor,  selbordercolor  },
+       [SchemeWarn]   = { col_black,   col_yellow,  col_red },
+       [SchemeUrgent] = { col_white,   col_red,     col_red },
 };
 
 /* tagging */

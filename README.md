@@ -10,3 +10,4 @@ This build implements multiple third-party patches:
 3. [smartborders](https://dwm.suckless.org/patches/smartborders/)
 4. [xresources](https://dwm.suckless.org/patches/xresources/)
 5. [uselessgap](https://dwm.suckless.org/patches/uselessgap/)
+6. [status colors](https://dwm.suckless.org/patches/statuscolors/)
