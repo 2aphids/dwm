@@ -2,7 +2,7 @@
 
 /* appearance */
 static unsigned int borderpx        = 2;        /* border pixel of windows */
-static const unsigned int gappx     = 8;        /* gaps between windows */
+static unsigned int gappx           = 8;        /* gaps between windows */
 static unsigned int snap            = 32;       /* snap pixel */
 static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static int showbar                  = 1;        /* 0 means no bar */
@@ -70,40 +70,41 @@ static const char *startupcmd[]     = { "startup", NULL };
 static const char *termcmd[]        = { "st", NULL };
 static const char *sscmd[]          = { "ss", NULL };
 static const char *picomtogglecmd[] = { "picomtoggle", NULL };
-// TODO: static const char *clipcmd[] = { "save-replay", NULL };
+// TODO: static const char *replaycmd[] = { "save-replay", NULL };
 
 /*
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
-    { "font",            STRING,  &font },
-		{ "dmenufont",       STRING,  &dmenufont },
-		{ "normbgcolor",     STRING,  &normbgcolor },
+    { "font",            STRING,  &font            },
+		{ "dmenufont",       STRING,  &dmenufont       },
+		{ "normbgcolor",     STRING,  &normbgcolor     },
 		{ "normbordercolor", STRING,  &normbordercolor },
-		{ "normfgcolor",     STRING,  &normfgcolor },
-		{ "selbgcolor",      STRING,  &selbgcolor },
-		{ "selbordercolor",  STRING,  &selbordercolor },
-		{ "selfgcolor",      STRING,  &selfgcolor },
-		{ "borderpx",        INTEGER, &borderpx },
-		{ "snap",          	 INTEGER, &snap },
-		{ "showbar",         INTEGER, &showbar },
-		{ "topbar",          INTEGER, &topbar },
-		{ "nmaster",         INTEGER, &nmaster },
-		{ "resizehints",     INTEGER, &resizehints },
-		{ "mfact",      	 	 FLOAT,   &mfact },
+		{ "normfgcolor",     STRING,  &normfgcolor     },
+		{ "selbgcolor",      STRING,  &selbgcolor      },
+		{ "selbordercolor",  STRING,  &selbordercolor  },
+		{ "selfgcolor",      STRING,  &selfgcolor      },
+		{ "borderpx",        INTEGER, &borderpx        },
+		{ "snap",          	 INTEGER, &snap            },
+		{ "showbar",         INTEGER, &showbar         },
+		{ "topbar",          INTEGER, &topbar          },
+		{ "nmaster",         INTEGER, &nmaster         },
+		{ "resizehints",     INTEGER, &resizehints     },
+    { "gapsize",         INTEGER, &gappx           },
+		{ "mfact",      	 	 FLOAT,   &mfact           },
 };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY|ShiftMask,             XK_a,      spawn,          {.v = playprevcmd } },
-	{ MODKEY|ShiftMask,             XK_d,      spawn,          {.v = playnextcmd } },
-	{ MODKEY,                       XK_space,  spawn,          {.v = playpausecmd } },
-	// TODO: { MODKEY|ControlMask,           XK_g,      spawn,          {.v = clipcmd } },
-	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = startupcmd } },
+	{ MODKEY|ShiftMask,             XK_a,      spawn,          {.v = playprevcmd    } },
+	{ MODKEY|ShiftMask,             XK_d,      spawn,          {.v = playnextcmd    } },
+	{ MODKEY,                       XK_space,  spawn,          {.v = playpausecmd   } },
+	// TODO: { MODKEY|ControlMask,           XK_g,      spawn,          {.v = replaycmd } },
+	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = startupcmd     } },
 	{ MODKEY,                       XK_s,      spawn,          {.v = picomtogglecmd } },
-	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = sscmd } },
-	{ MODKEY,                       XK_t,      spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd } },
+	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = sscmd          } },
+	{ MODKEY,                       XK_t,      spawn,          {.v = termcmd        } },
+	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd       } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
