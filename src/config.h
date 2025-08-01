@@ -77,7 +77,7 @@ static const char *picomtogglecmd[] = { "picomtoggle", NULL };
  */
 ResourcePref resources[] = {
     { "font",            STRING,  &font            },
-		{ "dmenufont",       STRING,  &dmenufont       },
+		{ "font",            STRING,  &dmenufont       },
 		{ "normbgcolor",     STRING,  &normbgcolor     },
 		{ "normbordercolor", STRING,  &normbordercolor },
 		{ "normfgcolor",     STRING,  &normfgcolor     },
