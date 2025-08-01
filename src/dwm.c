@@ -204,6 +204,7 @@ static void killclient(const Arg *arg);
 static void manage(Window w, XWindowAttributes *wa);
 static void mappingnotify(XEvent *e);
 static void maprequest(XEvent *e);
+static void modgappx(const Arg *arg);
 static void monocle(Monitor *m);
 static void motionnotify(XEvent *e);
 static void movemouse(const Arg *arg);
@@ -1209,6 +1210,14 @@ maprequest(XEvent *e)
 		return;
 	if (!wintoclient(ev->window))
 		manage(ev->window, &wa);
+}
+
+void
+modgappx(const Arg *arg)
+{
+  gappx += arg->i;
+  if (gappx < 0)
+    gappx = 0;
 }
 
 void
