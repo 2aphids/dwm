@@ -12,3 +12,4 @@ This build implements multiple third-party patches:
 5. [uselessgap](https://dwm.suckless.org/patches/uselessgap/)
 6. [status colors](https://dwm.suckless.org/patches/statuscolors/)
 7. [columns layout](https://dwm.suckless.org/patches/columns/)
+8. [cycle layouts](https://dwm.suckless.org/patches/cyclelayouts/)
