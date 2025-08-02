@@ -252,6 +252,7 @@ static void updatestatus(void);
 static void updatetitle(Client *c);
 static void updatewindowtype(Client *c);
 static void updatewmhints(Client *c);
+static void vertmonocle(Monitor *m);
 static void view(const Arg *arg);
 static Client *wintoclient(Window w);
 static Monitor *wintomon(Window w);
@@ -1448,7 +1449,8 @@ resizeclient(Client *c, int x, int y, int w, int h, int bw)
  		gapincr = gapoffset = 0;
  	} else {
  		/* Remove border and gap if layout is monocle or only one client */
- 		if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1) {
+ 		if (c->mon->lt[c->mon->sellt]->arrange == monocle
+     || (n == 1 && c->mon->lt[c->mon->sellt]->arrange != vertmonocle)) {
  			gapoffset = 0;
  			gapincr = -2 * borderpx;
  			wc.border_width = 0;
@@ -2272,6 +2274,23 @@ updatewmhints(Client *c)
 			c->neverfocus = 0;
 		XFree(wmh);
 	}
+}
+
+void
+vertmonocle(Monitor *m)
+{
+	unsigned int n = 0;
+	Client *c;
+
+	for (c = m->clients; c; c = c->next)
+		if (ISVISIBLE(c))
+			n++;
+
+	if (n > 0) /* override layout symbol */
+		snprintf(m->ltsymbol, sizeof m->ltsymbol, "-%d-", n);
+
+	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
+		resize(c, m->wx + (m->mw*(1.0-m->mfact)/2), m->wy, m->ww*m->mfact, m->wh, borderpx, 0);
 }
 
 void
