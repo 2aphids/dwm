@@ -2,7 +2,7 @@
 
 /* appearance */
 static unsigned int borderpx        = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 6;        /* gaps between windows */
+static unsigned int gappx     = 6;        /* gaps between windows */
 static unsigned int snap            = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static int showbar                  = 1;        /* 0 means no bar */
@@ -18,9 +18,9 @@ static char selbordercolor[]        = "#005577";
 static char selbgcolor[]            = "#005577";
 static char col_black[]             = "#111111";
 static char col_blue[]              = "#005577";
-static char col_green[]             = "#73d357";
-static char col_yellow[]            = "#eeff32";
-static char col_red[]               = "#d34149";
+static char col_green[]             = "#73c667";
+static char col_yellow[]            = "#e0e032";
+static char col_red[]               = "#e34149";
 static char col_white[]             = "#fefeff";
 static char *colors[][3] = {
        /*                 fg           bg           border   */
@@ -58,6 +58,7 @@ static const Layout layouts[] = {
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+	{ "|||",      col },
 };
 
 /* key definitions */
@@ -80,21 +81,22 @@ static const char *termcmd[]  = { "st", NULL };
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
-    { "font",            STRING,  &font },
-		{ "dmenufont",       STRING,  &dmenufont },
-		{ "normbgcolor",     STRING,  &normbgcolor },
+    { "font",            STRING,  &font            },
+		{ "dmenufont",       STRING,  &dmenufont       },
+		{ "normbgcolor",     STRING,  &normbgcolor     },
 		{ "normbordercolor", STRING,  &normbordercolor },
-		{ "normfgcolor",     STRING,  &normfgcolor },
-		{ "selbgcolor",      STRING,  &selbgcolor },
-		{ "selbordercolor",  STRING,  &selbordercolor },
-		{ "selfgcolor",      STRING,  &selfgcolor },
-		{ "borderpx",        INTEGER, &borderpx },
-		{ "snap",          	 INTEGER, &snap },
-		{ "showbar",         INTEGER, &showbar },
-		{ "topbar",          INTEGER, &topbar },
-		{ "nmaster",         INTEGER, &nmaster },
-		{ "resizehints",     INTEGER, &resizehints },
-		{ "mfact",      	 	 FLOAT,   &mfact },
+		{ "normfgcolor",     STRING,  &normfgcolor     },
+		{ "selbgcolor",      STRING,  &selbgcolor      },
+		{ "selbordercolor",  STRING,  &selbordercolor  },
+		{ "selfgcolor",      STRING,  &selfgcolor      },
+		{ "borderpx",        INTEGER, &borderpx        },
+		{ "snap",          	 INTEGER, &snap            },
+		{ "showbar",         INTEGER, &showbar         },
+		{ "topbar",          INTEGER, &topbar          },
+		{ "nmaster",         INTEGER, &nmaster         },
+		{ "resizehints",     INTEGER, &resizehints     },
+    { "gappx",         INTEGER,   &gappx           },
+		{ "mfact",      	 	 FLOAT,   &mfact           },
 };
 
 static const Key keys[] = {
@@ -109,11 +111,12 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+  { MODKEY,                       XK_Tab,    view,           {0} },
+  { MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
+  { MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_c,      setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
@@ -122,7 +125,6 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	// { MODKEY,                       XK_F5,     xrdb,           {.v = NULL } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)

@@ -18,9 +18,9 @@ static char selbordercolor[]        = "#005577";
 static char selbgcolor[]            = "#005577";
 static char col_black[]             = "#111111";
 static char col_blue[]              = "#005577";
-static char col_green[]             = "#73d357";
-static char col_yellow[]            = "#eeff32";
-static char col_red[]               = "#d34149";
+static char col_green[]             = "#73c667";
+static char col_yellow[]            = "#e0e032";
+static char col_red[]               = "#e34149";
 static char col_white[]             = "#fefeff";
 static char *colors[][3] = {
        /*                 fg           bg           border   */
@@ -57,6 +57,7 @@ static const Layout layouts[] = {
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+	{ "|||",      col },
 };
 
 /* key definitions */
@@ -67,12 +68,9 @@ static const Layout layouts[] = {
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
-
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
+static const char *dmenucmd[]       = { "dmenu_run", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *playprevcmd[]    = { "playerctl", "-i", "firefox", "previous", NULL };
 static const char *playnextcmd[]    = { "playerctl", "-i", "firefox", "next", NULL };
 static const char *playpausecmd[]   = { "playpause", NULL };
@@ -100,7 +98,7 @@ ResourcePref resources[] = {
 		{ "topbar",          INTEGER, &topbar          },
 		{ "nmaster",         INTEGER, &nmaster         },
 		{ "resizehints",     INTEGER, &resizehints     },
-    { "gapsize",         INTEGER, &gappx           },
+    { "gappx",           INTEGER, &gappx           },
 		{ "mfact",      	 	 FLOAT,   &mfact           },
 };
 
@@ -122,8 +120,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.025} },
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.025} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
@@ -139,7 +137,6 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	// { MODKEY,                       XK_F5,     xrdb,           {.v = NULL } }, // reload xresources
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
