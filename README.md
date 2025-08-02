@@ -11,5 +11,5 @@ This build implements multiple third-party patches:
 4. [xresources](https://dwm.suckless.org/patches/xresources/)
 5. [uselessgap](https://dwm.suckless.org/patches/uselessgap/)
 6. [status colors](https://dwm.suckless.org/patches/statuscolors/)
-7. [columns layout](https://dwm.suckless.org/patches/columns/)
+7. [columns layout](https://dwm.suckless.org/patches/columns/) (fixed to work with smartborders)
 8. [cycle layouts](https://dwm.suckless.org/patches/cyclelayouts/)

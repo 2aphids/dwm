@@ -1856,12 +1856,17 @@ tagmon(const Arg *arg)
 void
 col(Monitor *m)
 {
-	unsigned int i, n, h, w, x, y, mw;
+	unsigned int i, n, h, w, x, y, mw, bw;
 	Client *c;
 
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
 	if (n == 0)
 		return;
+
+	if (n == 1)
+		bw = 0;
+	else
+		bw = borderpx;
 
 	if (n > m->nmaster)
 		mw = m->nmaster ? m->ww * m->mfact : 0;
@@ -1870,12 +1875,11 @@ col(Monitor *m)
 	for (i = x = y = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
 			w = (mw - x) / (MIN(n, m->nmaster) - i);
-      // WARNING: potential error w/ expected smartborders behaviour here
-			resize(c, x + m->wx, m->wy, w - (2 * c->bw), m->wh - (2 * c->bw), c->bw, 0);
+			resize(c, x + m->wx, m->wy, w - (2 * bw), m->wh - (2 * bw), bw, 0);
 			x += WIDTH(c);
 		} else {
 			h = (m->wh - y) / (n - i);
-			resize(c, x + m->wx, m->wy + y, m->ww - x - (2 * c->bw), h - (2 * c->bw), c->bw, 0);
+			resize(c, x + m->wx, m->wy + y, m->ww - x - (2 * bw), h - (2 * bw), bw, 0);
 			y += HEIGHT(c);
 		}
 }
@@ -1894,6 +1898,7 @@ tile(Monitor *m)
 		bw = 0;
 	else
 		bw = borderpx;
+
 	if (n > m->nmaster)
 		mw = m->nmaster ? m->ww * m->mfact : 0;
 	else
