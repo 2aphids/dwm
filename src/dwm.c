@@ -1852,11 +1852,12 @@ col(Monitor *m)
 	for (i = x = y = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
 			w = (mw - x) / (MIN(n, m->nmaster) - i);
-			resize(c, x + m->wx, m->wy, w - (2 * c->bw), m->wh - (2 * c->bw), 0);
+      // WARNING: potential error w/ expected smartborders behaviour here
+			resize(c, x + m->wx, m->wy, w - (2 * c->bw), m->wh - (2 * c->bw), c->bw, 0);
 			x += WIDTH(c);
 		} else {
 			h = (m->wh - y) / (n - i);
-			resize(c, x + m->wx, m->wy + y, m->ww - x - (2 * c->bw), h - (2 * c->bw), 0);
+			resize(c, x + m->wx, m->wy + y, m->ww - x - (2 * c->bw), h - (2 * c->bw), c->bw, 0);
 			y += HEIGHT(c);
 		}
 }
@@ -1882,14 +1883,11 @@ tile(Monitor *m)
 	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
 			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
-			// resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
  			resize(c, m->wx, m->wy + my, mw - 2*bw + (n > 1 ? gappx : 0), h - 2*bw, bw, 0);
-// +			resize(c, m->wx, m->wy + my, mw - (2*c->bw) + (n > 1 ? gappx : 0), h - (2*c->bw), 0);
 			if (my + HEIGHT(c) < m->wh)
 				my += HEIGHT(c);
 		} else {
 			h = (m->wh - ty) / (n - i);
-			// resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
  			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - 2*bw, h - 2*bw, bw, 0);
 			if (ty + HEIGHT(c) < m->wh)
 				ty += HEIGHT(c);
