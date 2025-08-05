@@ -44,6 +44,7 @@ static const Rule rules[] = {
 	{ "Gimp",        NULL,     NULL,           0,         1,          0,           0,        -1 },
 	{ "Firefox",     NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "St",          NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "steam",		   NULL,     "Friends List", 0,         0,          1,           0,        -1 },
 };
 
 /* layout(s) */
@@ -172,7 +173,7 @@ static const Button buttons[] = {
 	{ ClkClientWin,         MODKEY,         MMB,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         RMB,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              LMB,        view,           {0} },
-	{ ClkTagBar,            0,              RMB,        toggleview,     {0} },
+	{ ClkTagBar,            0,              RMB,        cyclelayout,    { .i = +1 } },
 	{ ClkTagBar,            MODKEY,         LMB,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         RMB,        toggletag,      {0} },
 };
