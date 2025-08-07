@@ -81,7 +81,7 @@ static const char *startupcmd[]     = { "startup", NULL };
 static const char *termcmd[]        = { "st", NULL };
 static const char *sscmd[]          = { "ss", NULL };
 static const char *picomtogglecmd[] = { "picomtoggle", NULL };
-// TODO: static const char *replaycmd[] = { "save-replay", NULL };
+static const char *replaycmd[] = { "save-replay", NULL };
 
 /*
  * Xresources preferences to load at startup
@@ -110,7 +110,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_a,      spawn,          {.v = playprevcmd    } },
 	{ MODKEY|ShiftMask,             XK_d,      spawn,          {.v = playnextcmd    } },
 	{ MODKEY,                       XK_space,  spawn,          {.v = playpausecmd   } },
-	// TODO: { MODKEY|ControlMask,           XK_g,      spawn,          {.v = replaycmd } },
+	{ MODKEY|ControlMask,           XK_g,      spawn,          {.v = replaycmd      } },
 	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = startupcmd     } },
 	{ MODKEY,                       XK_s,      spawn,          {.v = picomtogglecmd } },
 	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = sscmd          } },
