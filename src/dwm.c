@@ -62,6 +62,10 @@
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw + gappx)
 #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
 #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
+#define ISSOLITARY(X)           if (X == 1 && solitarygap == 1)  \
+                                  bw = 0;                        \
+                                else                             \
+                                  bw = borderpx                  \
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
@@ -237,6 +241,7 @@ static void tagmon(const Arg *arg);
 static void tile(Monitor *m);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
+static void togglesolitarygap(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
 static void unfocus(Client *c, int setfocus);
@@ -1865,10 +1870,7 @@ col(Monitor *m)
 	if (n == 0)
 		return;
 
-	if (n == 1)
-		bw = 0;
-	else
-		bw = borderpx;
+  ISSOLITARY(n);
 
 	if (n > m->nmaster)
 		mw = m->nmaster ? m->ww * m->mfact : 0;
@@ -1893,13 +1895,10 @@ tile(Monitor *m)
 	Client *c;
 
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
-	if (n == 0)
-		return;
+    if (n == 0)
+      return;
 
-	if (n == 1)
-		bw = 0;
-	else
-		bw = borderpx;
+  ISSOLITARY(n);
 
 	if (n > m->nmaster)
 		mw = m->nmaster ? m->ww * m->mfact : 0;
@@ -1942,6 +1941,12 @@ togglefloating(const Arg *arg)
 			selmon->sel->h - 2 * (borderpx - selmon->sel->bw),
 			borderpx, 0);
 	arrange(selmon);
+}
+
+void
+togglesolitarygap(const Arg *arg) {
+  solitarygap = solitarygap == 0 ? 1 : 0;
+  arrange(selmon);
 }
 
 void

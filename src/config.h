@@ -2,8 +2,9 @@
 
 /* appearance */
 static unsigned int borderpx        = 2;        /* border pixel of windows */
-static unsigned int gappx           = 8;        /* gaps between windows */
+static unsigned int gappx           = 16;       /* gaps between windows */
 static unsigned int snap            = 32;       /* snap pixel */
+static unsigned int solitarygap     = 0;        /* gaps for solitary clients */
 static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static int showbar                  = 1;        /* 0 means no bar */
 static int topbar                   = 0;        /* 0 means bottom bar */
@@ -56,8 +57,8 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	// { "><>",      NULL },    /* no layout function means floating behavior */
+	// { "[M]",      monocle },
 	{ "-V-",      vertmonocle },
 	{ "|||",      col },
  	{ NULL,       NULL },
@@ -83,9 +84,7 @@ static const char *sscmd[]          = { "ss", NULL };
 static const char *picomtogglecmd[] = { "picomtoggle", NULL };
 static const char *replaycmd[] = { "save-replay", NULL };
 
-/*
- * Xresources preferences to load at startup
- */
+/* xresources preferences to load at startup */
 ResourcePref resources[] = {
     { "font",            STRING,  &font            },
 		{ "font",            STRING,  &dmenufont       },
@@ -102,11 +101,13 @@ ResourcePref resources[] = {
 		{ "nmaster",         INTEGER, &nmaster         },
 		{ "resizehints",     INTEGER, &resizehints     },
     { "gappx",           INTEGER, &gappx           },
+    { "solitarygap",     INTEGER, &solitarygap     },
 		{ "mfact",      	 	 FLOAT,   &mfact           },
 };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
+	{ MODKEY|ControlMask,           XK_s,      togglesolitarygap, {0} },
 	{ MODKEY|ShiftMask,             XK_a,      spawn,          {.v = playprevcmd    } },
 	{ MODKEY|ShiftMask,             XK_d,      spawn,          {.v = playnextcmd    } },
 	{ MODKEY,                       XK_space,  spawn,          {.v = playpausecmd   } },
