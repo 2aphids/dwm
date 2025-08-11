@@ -1449,7 +1449,7 @@ resizeclient(Client *c, int x, int y, int w, int h, int bw)
      || (n == 1 && c->mon->lt[c->mon->sellt]->arrange != vertmonocle)
      && solitarygap == 0) {
  			gapoffset = 0;
- 			gapincr = -2 * borderpx;
+ 			gapincr = -1;//-2 * borderpx;
  			wc.border_width = 0;
  		} else {
  			gapoffset = gappx;
