@@ -62,10 +62,6 @@
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw + gappx)
 #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
 #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
-#define ISSOLITARY(X)           if (X == 1 && solitarygap == 1)  \
-                                  bw = 0;                        \
-                                else                             \
-                                  bw = borderpx                  \
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
@@ -1441,11 +1437,6 @@ resizeclient(Client *c, int x, int y, int w, int h, int bw)
  	unsigned int gapincr;
  	Client *nbc;
 
-	// c->oldx = c->x; c->x = wc.x = x;
-	// c->oldy = c->y; c->y = wc.y = y;
-	// c->oldw = c->w; c->w = wc.width = w;
-	// c->oldh = c->h; c->h = wc.height = h;
-
  	/* Get number of clients for the client's monitor */
  	for (n = 0, nbc = nexttiled(c->mon->clients); nbc; nbc = nexttiled(nbc->next), n++);
 
@@ -1455,7 +1446,8 @@ resizeclient(Client *c, int x, int y, int w, int h, int bw)
  	} else {
  		/* Remove border and gap if layout is monocle or only one client */
  		if (c->mon->lt[c->mon->sellt]->arrange == monocle
-     || (n == 1 && c->mon->lt[c->mon->sellt]->arrange != vertmonocle)) {
+     || (n == 1 && c->mon->lt[c->mon->sellt]->arrange != vertmonocle)
+     && solitarygap == 0) {
  			gapoffset = 0;
  			gapincr = -2 * borderpx;
  			wc.border_width = 0;
@@ -1470,6 +1462,7 @@ resizeclient(Client *c, int x, int y, int w, int h, int bw)
  	c->oldw = c->w; c->w = wc.width = w - gapincr;
  	c->oldh = c->h; c->h = wc.height = h - gapincr;
 	c->oldbw = c->bw; c->bw = wc.border_width = bw;
+
 	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
 	configure(c);
 	XSync(dpy, False);
@@ -1870,7 +1863,10 @@ col(Monitor *m)
 	if (n == 0)
 		return;
 
-  ISSOLITARY(n);
+  if (n == 1)
+    bw = 0;
+  else
+    bw = borderpx;
 
 	if (n > m->nmaster)
 		mw = m->nmaster ? m->ww * m->mfact : 0;
@@ -1898,7 +1894,10 @@ tile(Monitor *m)
     if (n == 0)
       return;
 
-  ISSOLITARY(n);
+  if (n == 1)
+    bw = 0;
+  else
+    bw = borderpx;
 
 	if (n > m->nmaster)
 		mw = m->nmaster ? m->ww * m->mfact : 0;
