@@ -33,7 +33,6 @@ static char *colors[][3] = {
        [SchemeRed]    = { col_red,     normbgcolor, normbordercolor },
 };
 
-/* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
@@ -42,9 +41,13 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class         instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Gimp",        NULL,     NULL,           0,         1,          0,           0,        -1 },
+	// { "Gimp",        NULL,     NULL,           0,         1,          0,           0,        -1 },
 	{ "Firefox",     NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "St",          NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "floating",    NULL,     NULL,           0,         1,          0,           0,        -1 },
+	{ "Alacritty",   NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "kitty",       NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "floaterm",    NULL,     NULL,           0,         1,          1,           0,        -1 },
 	{ "steam",		   NULL,     "Friends List", 0,         0,          1,           0,        -1 },
 };
 
@@ -64,26 +67,6 @@ static const Layout layouts[] = {
 	{ "|||",      col },
  	{ NULL,       NULL },
 };
-
-/* key definitions */
-#define MODKEY Mod4Mask
-#define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
-
-/* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]       = { "dmenu_run", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *playprevcmd[]    = { "playerctl", "-i", "firefox", "previous", NULL };
-static const char *playnextcmd[]    = { "playerctl", "-i", "firefox", "next", NULL };
-static const char *playpausecmd[]   = { "playpause", NULL };
-static const char *startupcmd[]     = { "startup", NULL };
-static const char *termcmd[]        = { "st", NULL };
-static const char *sscmd[]          = { "ss", NULL };
-static const char *picomtogglecmd[] = { "picomtoggle", NULL };
-static const char *replaycmd[] = { "save-replay", NULL };
 
 /* xresources preferences to load at startup */
 ResourcePref resources[] = {
@@ -106,18 +89,42 @@ ResourcePref resources[] = {
 		{ "mfact",      	 	 FLOAT,   &mfact           },
 };
 
+/* key definitions */
+#define MODKEY Mod4Mask
+#define TAGKEYS(KEY,TAG) \
+	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+
+/* commands */
+static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static char *dmenucmd[]       = { "dmenu_run", "-b", "-m", dmenumon, /*"-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor,*/ NULL };
+static const char *termcmd[]        = { "st", NULL };
+static const char *startupcmd[]     = { "startup", NULL };
+static const char *picomtogglecmd[] = { "picomtoggle", NULL };
+static const char *playprevcmd[]    = { "playerctl", "-i", "firefox", "previous", NULL };
+static const char *playnextcmd[]    = { "playerctl", "-i", "firefox", "next", NULL };
+static const char *playpausecmd[]   = { "playpause", NULL };
+static const char *sscmd[]          = { "ss", NULL };
+static const char *ssfcmd[]         = { "ssf", NULL };
+static const char *webcmd[]         = { "websearch", NULL };
+static const char *replaycmd[]      = { "save-replay", NULL };
+
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY|ControlMask,           XK_s,      togglesolitarygap, {0} },
+	{ MODKEY,                       XK_w,      spawn,          {.v = webcmd         } },
 	{ MODKEY|ShiftMask,             XK_a,      spawn,          {.v = playprevcmd    } },
 	{ MODKEY|ShiftMask,             XK_d,      spawn,          {.v = playnextcmd    } },
 	{ MODKEY,                       XK_space,  spawn,          {.v = playpausecmd   } },
 	{ MODKEY|ControlMask,           XK_g,      spawn,          {.v = replaycmd      } },
 	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = startupcmd     } },
-	{ MODKEY,                       XK_s,      spawn,          {.v = picomtogglecmd } },
+	{ MODKEY,                       XK_p,      spawn,          {.v = picomtogglecmd } },
 	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = sscmd          } },
+	{ MODKEY,                       XK_s,      spawn,          {.v = ssfcmd         } },
 	{ MODKEY,                       XK_t,      spawn,          {.v = termcmd        } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd       } },
+	{ MODKEY|ControlMask,           XK_s,      togglesolitarygap, {0} },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_g,      modgappx,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_g,      modgappx,       {.i = -1 } },
@@ -130,7 +137,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	// { MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	// { MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	// { MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	// { MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },

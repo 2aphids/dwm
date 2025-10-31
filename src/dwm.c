@@ -2562,12 +2562,14 @@ load_xresources(void)
 
 	display = XOpenDisplay(NULL);
 	resm = XResourceManagerString(display);
-	if (!resm)
+  if (!resm)
 		return;
 
 	db = XrmGetStringDatabase(resm);
 	for (p = resources; p < resources + LENGTH(resources); p++)
 		resource_load(db, p->name, p->type, p->dst);
+
+  // dmenucmd = { "dmenu_run", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 	XCloseDisplay(display);
 }
 
