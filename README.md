@@ -13,3 +13,19 @@ Among original changes, this build implements multiple third-party patches:
 6. [status colors](https://dwm.suckless.org/patches/statuscolors/)
 7. [columns layout](https://dwm.suckless.org/patches/columns/) (fixed to work with smartborders)
 8. [cycle layouts](https://dwm.suckless.org/patches/cyclelayouts/)
+
+# Notable Bindings
+
+MOD+T: launch terminal
+MOD+W: launch web search w/ dmenu
+MOD+R: launch dmenu_run
+MOD+P: toggle Picom
+MOD+Shift+W: launch startup script
+MOD+Control+G: save instant replay
+
+MOD+Space: play/pause current media
+MOD+Shift+A: play previous track
+MOD+Shift+D: play next track
+
+MOD+Shift+S: selection screenshot
+MOD+S: screenshot focused window
